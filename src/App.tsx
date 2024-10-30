@@ -75,16 +75,21 @@ function App() {
                   backgroundColor: "#EAF0F5",
                   color: "#04142F",
                   fontSize: 14,
+                  fontWeight: 500,
+                  width: 95,
+                  height: 40
                 }}
               >
                 Cancel
               </Button>
               <Button
                 style={{
-                  width: "auto",
+                  width: 66,
+                  height: 40,
                   backgroundColor: "#0D55CF",
                   color: "#FFFFFF",
                   fontSize: 14,
+                  fontWeight: 500
                 }}
               >
                 Ok
