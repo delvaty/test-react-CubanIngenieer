@@ -1,6 +1,6 @@
 /* import './App.css' */
 /* import { Typography } from "antd"; */
-import { useState } from "react";
+import {  useState } from "react";
 import "./app.scss";
 import { Input, Button, Avatar } from "antd";
 import addIcon from "./assets/icons/plus-square.svg";
@@ -14,13 +14,28 @@ import estimation from "./assets/icons/estimation.svg";
 
 function App() {
   const [showOptions, setShowOptions] = useState(false);
+  const [isTextEntered, setIsTextEntered] = useState(false);
+  
 
   const handleFocus = () => {
     setShowOptions(true);
   };
-  const handleBlur = () => {
-    setShowOptions(false);
+  /* const handleBlur = () => {
+    if (!isTextEntered) {
+      setShowOptions(false);
+    }
+  }; */
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const hasText = e.target.value.trim() !== "";
+    setIsTextEntered(hasText);
   };
+
+  const handleOkClick = () => {
+    if (!isTextEntered) {
+      setShowOptions(false);
+    }
+  };
+  
 
   /* const { Title, Text } = Typography; */
   return (
@@ -33,10 +48,10 @@ function App() {
             variant="borderless"
             className="ant-input"
             onFocus={handleFocus}
-            onBlur={handleBlur}
+            onChange={handleChange}
           />
           {showOptions && (
-            <Avatar src={avatar} alt="avatar" className="input-avatar" />
+            <Avatar src={avatar} alt="avatar" className={`input-avatar ${isTextEntered ? "enabled-avatar" : ""}`}  />
           )}
         </div>
           {showOptions && (
@@ -47,25 +62,26 @@ function App() {
                 variant="filled"
                 color="default"
                 style={{ width: "auto", height: 40 }}
+                disabled={!isTextEntered}
               />
             </div>
   
             <div className="list-button">
               <Button
                 icon={<img src={today} alt="today" />}
-                style={{ width: "auto", height: 40 }}
+                style={{ width: "auto", height: 40 }} disabled={!isTextEntered}
               />
               <Button
                 icon={<img src={publicIcon} alt="public" />}
-                style={{ width: "auto", height: 40 }}
+                style={{ width: "auto", height: 40 }} disabled={!isTextEntered}
               />
               <Button
                 icon={<img src={hightlight} alt="highlight" />}
-                style={{ width: "auto", height: 40 }}
+                style={{ width: "auto", height: 40 }} disabled={!isTextEntered}
               />
               <Button
                 icon={<img src={estimation} alt="estimation" />}
-                style={{ width: "auto", height: 40 }}
+                style={{ width: "auto", height: 40 }} disabled={!isTextEntered}
               />
             </div>
   
@@ -91,6 +107,7 @@ function App() {
                   fontSize: 14,
                   fontWeight: 500
                 }}
+                onClick={handleOkClick}
               >
                 Ok
               </Button>
