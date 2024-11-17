@@ -11,11 +11,14 @@ import publicIcon from "./assets/icons/unlock.svg";
 import hightlight from "./assets/icons/sun.svg";
 import estimation from "./assets/icons/0-circle.svg";
 import linkIcon from './assets/icons/link.svg'
+import emailIcon from './assets/icons/mail.svg'
 /* import { ReactComponent as DecorationIcons } from './assets/icons/decoration.svg'; */
 
 interface Tag {
   type: string;
   text: string;
+  linkNumber?: number;
+  emailNumber?: number;
 }
 
 interface Task {
@@ -26,6 +29,8 @@ interface Task {
 function App() {
   const [showOptions, setShowOptions] = useState(false);
   const [isTextEntered, setIsTextEntered] = useState(false);
+  const [linkCounter, setLinkCounter] = useState(0);
+  const [emailCounter, setEmailCounter] = useState(0);
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -58,6 +63,8 @@ function App() {
     } else {
       const tags: Task = { id: Math.random(), texts: [] };
       const words = text.split(" ");
+      let localLinkCount= linkCounter;
+      let localEmailCount= emailCounter;
       words.forEach((word) => {
         // Expresiones regulares para cada caso
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Correos electrónicos
@@ -71,16 +78,22 @@ function App() {
           type = "hashtag";
         } else if (emailRegex.test(word)) {
           type = "email";
+          localEmailCount++;
         } else if (urlRegex.test(word)) {
           type = "url";
+          localLinkCount++;
         }
 
         tags.texts.push({
           type: type,
           text: word,
+          linkNumber: type === "url" ? localLinkCount: undefined,
+          emailNumber: type === "email" ? localEmailCount: undefined,
         });
       });
 
+      setLinkCounter(localLinkCount)
+      setEmailCounter(localEmailCount)
       setTasks([...tasks, tags]);
       setText("");
     }
@@ -105,7 +118,12 @@ function App() {
                     {text.type === "url" ? (
                     <>
                       <img src={linkIcon} alt="Link icon" style={{ marginRight: 4, width: 12 }} className="link-icon" />
-                      <span>link</span>
+                      <span>link {text.linkNumber}</span>
+                    </>
+                  ) : text.type === "email" ? (
+                    <>
+                      <img src={emailIcon} alt="Email icon" style={{ marginRight: 4, width: 12 }} className="email-icon" />
+                      <span>email {text.emailNumber}</span>
                     </>
                   ) : (
                     text.text
