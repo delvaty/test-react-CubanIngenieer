@@ -10,6 +10,7 @@ import today from "./assets/icons/calendar.svg";
 import publicIcon from "./assets/icons/unlock.svg";
 import hightlight from "./assets/icons/sun.svg";
 import estimation from "./assets/icons/0-circle.svg";
+import linkIcon from './assets/icons/link.svg'
 /* import { ReactComponent as DecorationIcons } from './assets/icons/decoration.svg'; */
 
 interface Tag {
@@ -99,8 +100,16 @@ function App() {
             <div className="task-text" key={task.id}>
               {task.texts.map((text) => {
                 return (
-                  <span className={text.type} key={text.text}>
-                    {text.text}
+                  <span className={text.type} key={text.text as string}>
+                    {/* {text.text} */}
+                    {text.type === "url" ? (
+                    <>
+                      <img src={linkIcon} alt="Link icon" style={{ marginRight: 4, width: 12 }} className="link-icon" />
+                      <span>link</span>
+                    </>
+                  ) : (
+                    text.text
+                  )}
                   </span>
                 );
               })}
